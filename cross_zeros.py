@@ -4,11 +4,14 @@ import fitz
 import random
 import os
 
-col_names = ['A', 'B', 'C']
-df = pd.DataFrame(columns = col_names, index = [1, 2, 3])
 path = 'D:\Desktop\Программы Питон\Games\output'
 
-def user_move(position, user_id):
+def create_field():
+    col_names = ['A', 'B', 'C']
+    df = pd.DataFrame(columns = col_names, index = [1, 2, 3])
+    return(df)
+
+def user_move(df, position, user_id):
     if df.iloc[position[0]][position[1]] == '0':
         return(df, 'Ошибка, это место уже занято')
     elif df.iloc[position[0]][position[1]] == 'X':
@@ -83,6 +86,10 @@ def check_win(df):
     user_win = [0, 0, 0, 0]
     nol = 0
     for i in range(3):
+        AI_win[0] = 0
+        AI_win[1] = 0
+        user_win[0] = 0
+        user_win[1] = 0
         for j in range(3):
             if df.iloc[i, j] == 'X': user_win[0] += 1
             if df.iloc[i, j] == '0': AI_win[0] += 1
