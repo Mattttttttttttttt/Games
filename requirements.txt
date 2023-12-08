@@ -3,5 +3,3 @@ pyTelegramBotAPI
 pandas
 csv2pdf
 fitz
-random
-os
