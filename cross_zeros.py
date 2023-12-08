@@ -4,7 +4,7 @@ import fitz
 import random
 import os
 
-path = 'D:\Desktop\Программы Питон\Games\output'
+#path = 'D:\Desktop\Программы Питон\Games\output'
 
 def create_field():
     col_names = ['A', 'B', 'C']
@@ -23,14 +23,14 @@ def user_move(df, position, user_id):
 
 
 def save(df, user_id):
-    df.to_csv(path + f'\output_{user_id}.csv')
-    convert(path + f'\output_{user_id}.csv', path + f'\output_{user_id}.pdf', size = 60)
-    doc = fitz.open(path + f'\output_{user_id}.pdf')
+    df.to_csv('\data\output\output_{user_id}.csv')
+    convert('\data\output\output_{user_id}.csv', '\data\output\output_{user_id}.pdf', size = 60)
+    doc = fitz.open('\data\output\output_{user_id}.pdf')
     pic = doc.load_page(0).get_pixmap()
-    pic.save(path + f'\output_{user_id}.png')
+    pic.save('\data\output\output_{user_id}.png')
     doc.close()
-    os.remove(path + f'\output_{user_id}.csv')
-    os.remove(path + f'\output_{user_id}.pdf')
+    os.remove('\data\output\output_{user_id}.csv')
+    os.remove('\data\output\output_{user_id}.pdf')
 
 
 def AI_move(df, user_id):
