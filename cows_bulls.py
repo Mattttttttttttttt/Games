@@ -22,4 +22,3 @@ def check(gen, num):
         if num[i] in gen: c+=1
     return b, c
 
-
