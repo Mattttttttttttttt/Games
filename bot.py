@@ -59,9 +59,9 @@ def callback(c):
         global df
         df = cs.create_field()
         df, err = cs.user_move(df, pos, chat_id)
-        bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open('\data\output\output_{chat_id}.png', 'rb'))
+        bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open(f'\output\output_{chat_id}.png', 'rb'))
         df = cs.AI_move(df, chat_id)
-        bot.send_document(chat_id = chat_id, caption = 'Ход бота', document = open('\data\output\output_{chat_id}.png', 'rb'))
+        bot.send_document(chat_id = chat_id, caption = 'Ход бота', document = open(f'\output\output_{chat_id}.png', 'rb'))
         bot.send_message(chat_id = chat_id, text = 'Ваш ход!')
         move_cs(chat_id, 1)
     elif 'c&n' in c.data and c.data[4] != '0':
@@ -69,13 +69,13 @@ def callback(c):
         pos = cs_dic.get(int(c.data[3]))
         df, err = cs.user_move(df, pos, chat_id)
         if err == 0:
-            bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open('\data\output\output_{chat_id}.png', 'rb'))
+            bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open(f'\output\output_{chat_id}.png', 'rb'))
             win = cs.check_win(df)
             if win != 1:
                 bot.send_message(chat_id=chat_id, text=win)
             else:
                 df = cs.AI_move(df, chat_id)
-                bot.send_document(chat_id=chat_id, caption='Ход бота', document=open('\data\output\output_{chat_id}.png', 'rb'))
+                bot.send_document(chat_id=chat_id, caption='Ход бота', document=open(f'\output\output_{chat_id}.png', 'rb'))
                 win = cs.check_win(df)
                 if win == 1:
                     bot.send_message(chat_id=chat_id, text='Ваш ход!')

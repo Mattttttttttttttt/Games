@@ -23,14 +23,14 @@ def user_move(df, position, user_id):
 
 
 def save(df, user_id):
-    df.to_csv('\data\output\output_{user_id}.csv')
-    convert('\data\output\output_{user_id}.csv', '\data\output\output_{user_id}.pdf', size = 60)
-    doc = fitz.open('\data\output\output_{user_id}.pdf')
+    df.to_csv(f'\output\output_{user_id}.csv')
+    convert(f'\output\output_{user_id}.csv', f'\output\output_{user_id}.pdf', size = 60)
+    doc = fitz.open(f'\output\output_{user_id}.pdf')
     pic = doc.load_page(0).get_pixmap()
-    pic.save('\data\output\output_{user_id}.png')
+    pic.save(f'\output\output_{user_id}.png')
     doc.close()
-    os.remove('\data\output\output_{user_id}.csv')
-    os.remove('\data\output\output_{user_id}.pdf')
+    os.remove(f'\output\output_{user_id}.csv')
+    os.remove(f'\output\output_{user_id}.pdf')
 
 
 def AI_move(df, user_id):
