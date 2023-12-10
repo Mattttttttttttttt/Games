@@ -1,10 +1,12 @@
 import telebot
 from telebot import types
 import cross_zeros as cs
+import os
 
 
-API_token = '6872564247:AAEj8KfaRdD0izD6w3-MYASgwlvmG33vMP8'
+API_token = '6872564247:AAEj8KfaRdD0izD6w3-MYASgwlvmG33vMP8' if 'AMVERA' in os.environ else '6856931870:AAF7-5nOZXru_0Ebm5ae4yDjmOwfVvF3iI4'
 bot = telebot.TeleBot(API_token)
+
 
 cs_dic = {1: [0, 0],
           2: [0, 1],
@@ -15,8 +17,8 @@ cs_dic = {1: [0, 0],
           7: [2, 0],
           8: [2, 1],
           9: [2, 2]}
-#path_output = 'D:\Desktop\Программы Питон\Games\output'
-#path_data = 'D:\Desktop\Программы Питон\Games\data'
+path = '/data' if 'AMVERA' in os.environ else 'D:/Desktop/Программы Питон/Games/data'
+
 def move_cs(chat_id, l):
     keyboard = types.InlineKeyboardMarkup()
     for i in range(1, 10, 3):
@@ -26,6 +28,9 @@ def move_cs(chat_id, l):
         keyboard.add(btn1, btn2, btn3, row_width=3)
 
     bot.send_message(chat_id=chat_id, text='Выберите позицию для хода (1-9):', reply_markup=keyboard)
+
+
+def erase(user_id): os.remove(path + f'/output/output_{user_id}.png')
 
 
 def send_instr(user_id):
@@ -59,9 +64,9 @@ def callback(c):
         global df
         df = cs.create_field()
         df, err = cs.user_move(df, pos, chat_id)
-        bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open(f'/data/output/output_{chat_id}.png', 'rb'))
+        bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open(path + f'/output/output_{chat_id}.png', 'rb'))
         df = cs.AI_move(df, chat_id)
-        bot.send_document(chat_id = chat_id, caption = 'Ход бота', document = open(f'/data/output/output_{chat_id}.png', 'rb'))
+        bot.send_document(chat_id = chat_id, caption = 'Ход бота', document = open(path + f'/output/output_{chat_id}.png', 'rb'))
         bot.send_message(chat_id = chat_id, text = 'Ваш ход!')
         move_cs(chat_id, 1)
     elif 'c&n' in c.data and c.data[4] != '0':
@@ -69,19 +74,23 @@ def callback(c):
         pos = cs_dic.get(int(c.data[3]))
         df, err = cs.user_move(df, pos, chat_id)
         if err == 0:
-            bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open(f'/data/output/output_{chat_id}.png', 'rb'))
+            bot.send_document(chat_id = chat_id, caption = 'Ваш ход', document = open(path + f'/output/output_{chat_id}.png', 'rb'))
             win = cs.check_win(df)
             if win != 1:
                 bot.send_message(chat_id=chat_id, text=win)
+                erase(chat_id)
+                send_welcome(c.message)
             else:
                 df = cs.AI_move(df, chat_id)
-                bot.send_document(chat_id=chat_id, caption='Ход бота', document=open(f'/data/output/output_{chat_id}.png', 'rb'))
+                bot.send_document(chat_id=chat_id, caption='Ход бота', document=open(path + f'/output/output_{chat_id}.png', 'rb'))
                 win = cs.check_win(df)
                 if win == 1:
                     bot.send_message(chat_id=chat_id, text='Ваш ход!')
                     move_cs(chat_id, 1)
                 else:
                     bot.send_message(chat_id=chat_id, text = win)
+                    erase(chat_id)
+                    send_welcome(c.message)
         else:
             bot.send_message(chat_id=chat_id, text = err)
             bot.send_message(chat_id=chat_id, text = 'Попытайтесь снова')
@@ -96,7 +105,7 @@ def send_ins(mess):
     chat_id = mess.chat.id
     if mess.text == '/инструкция КН':
         bot.send_message(chat_id, text = 'Принцип игры - составить три символа в ряд (по вертикали, горизонтали или по диагонали).\n Вы играете символом \'X\' и ходите первым.\n Против вас играю я, хожу - \'0\'\n Чтобы поставить символ вам нужно нажать кнопку (их вы увидите в процессе игры) с номером клетки в которую вы ходите поставить символ.')
-        bot.send_document(chat_id, caption = 'Нумерация клеточек', document = open('/data/Разметка КН.png', 'rb'))
+        bot.send_document(chat_id, caption = 'Нумерация клеточек', document = open(path + '/Разметка КН.png', 'rb'))
     if mess.text == '/инструкция': send_instr(chat_id)
 
 

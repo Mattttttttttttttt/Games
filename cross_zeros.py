@@ -4,7 +4,7 @@ import fitz
 import random
 import os
 
-#path = 'D:\Desktop\Программы Питон\Games\output'
+path = '/data' if 'AMVERA' in os.environ else 'D:/Desktop/Программы Питон/Games/data'
 
 def create_field():
     col_names = ['A', 'B', 'C']
@@ -23,14 +23,14 @@ def user_move(df, position, user_id):
 
 
 def save(df, user_id):
-    df.to_csv(f'/data/output/output_{user_id}.csv')
-    convert(f'/data/output/output_{user_id}.csv', f'/data/output/output_{user_id}.pdf', size = 60)
-    doc = fitz.open(f'/data/output/output_{user_id}.pdf')
+    df.to_csv(path + f'/output/output_{user_id}.csv')
+    convert(path + f'/output/output_{user_id}.csv', path + f'/output/output_{user_id}.pdf', size = 60)
+    doc = fitz.open(path + f'/output/output_{user_id}.pdf')
     pic = doc.load_page(0).get_pixmap()
-    pic.save(f'/data/output/output_{user_id}.png')
+    pic.save(path + f'/output/output_{user_id}.png')
     doc.close()
-    os.remove(f'/data/output/output_{user_id}.csv')
-    os.remove(f'/data/output/output_{user_id}.pdf')
+    os.remove(path + f'/output/output_{user_id}.csv')
+    os.remove(path + f'/output/output_{user_id}.pdf')
 
 
 def AI_move(df, user_id):
