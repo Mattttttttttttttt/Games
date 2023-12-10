@@ -7,6 +7,6 @@ meta:
 build:
   requirementsPath: requirements.txt
 run:
-  scriptName: D:\Desktop\Программы Питон\Games\bot.py
+  scriptName: bot.py
   persistenceMount: /data
   containerPort: 80

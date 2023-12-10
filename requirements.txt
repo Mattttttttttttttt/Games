@@ -2,4 +2,5 @@ python-telegram-bot
 pyTelegramBotAPI
 pandas
 csv2pdf
+PyMuPDF
 fitz
