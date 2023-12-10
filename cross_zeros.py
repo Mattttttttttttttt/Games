@@ -24,7 +24,7 @@ def user_move(df, position, user_id):
 
 def save(df, user_id):
     df.to_csv(f'/data/output/output_{user_id}.csv')
-    convert(f'/data/output/output_{user_id}.csv', f'/data/output_{user_id}.pdf', size = 60)
+    convert(f'/data/output/output_{user_id}.csv', f'/data/output/output_{user_id}.pdf', size = 60)
     doc = fitz.open(f'/data/output/output_{user_id}.pdf')
     pic = doc.load_page(0).get_pixmap()
     pic.save(f'/data/output/output_{user_id}.png')
