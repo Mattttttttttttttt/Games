@@ -110,28 +110,28 @@ def callback_cb(c):
     global gen
     gen = cb.generate()
     bot.send_message(chat_id, text = 'Я загадал число, попробуйте его угадать')
-
-
-@bot.message_handler(func = lambda message: message.text.isdigit())
+    bot.register_next_step_handler_by_chat_id(chat_id, play_cb)
 def play_cb(message):
     chat_id = message.chat.id
-    try:
-        num = message.text
-        if len(num) == 4:
-            b,c = cb.check(gen, num)
-            if b != 0:
-                if b == 1: bot.send_message(chat_id, text = 'У вас 1 бык')
-                elif b > 1: bot.send_message(chat_id, text = f'У вас {b} быка')
-            if c != 0:
-                if c == 1: bot.send_message(chat_id, text = 'У вас 1 корова')
-                elif c > 1: bot.send_message(chat_id, text = f'У вас {c} коровы')
-            if c == 0 and b == 0: bot.send_message(chat_id, text = 'У вас ни одного быка и ни одной коровы( Попытайтесь ещё!')
-            if b == 4: bot.send_message(chat_id, text = f'Поздравляю! Вы угадали число {gen}!')
-            elif b != 4: bot.send_message(chat_id, text = 'Почти, попытайтесь ещё!')
-        else: bot.send_message(chat_id, text = 'Слово четырёхзначное состоит из двух корней, один из которых четыре. ЧЕТЫРЕ. Давайте я никому не скажу, а вы попробуете ещё раз?')
-    except:
-        bot.send_message(chat_id, text = 'Отлично! А теперь три цифры с обратной стороны карты')
-        bot.send_message(chat_id, text = f'||Вы явно делаете что\-то не то\.\.\.||', parse_mode = 'MarkdownV2')
+    num = message.text
+    if len(num) == 4:
+        b,c = cb.check(gen, num)
+        if b != 0:
+            if b == 1: bot.send_message(chat_id, text = 'У вас 1 бык')
+            elif b > 1: bot.send_message(chat_id, text = f'У вас {b} быка')
+        if c != 0:
+            if c == 1: bot.send_message(chat_id, text = 'У вас 1 корова')
+            elif c > 1: bot.send_message(chat_id, text = f'У вас {c} коровы')
+        if c == 0 and b == 0: bot.send_message(chat_id, text = 'У вас ни одного быка и ни одной коровы( Попытайтесь ещё!')
+        if b == 4:
+            bot.send_message(chat_id, text = f'Поздравляю! Вы угадали число {gen}!')
+            send_welcome(message)
+        elif b != 4:
+            bot.send_message(chat_id, text = 'Почти, попытайтесь ещё!')
+            bot.register_next_step_handler_by_chat_id(chat_id, play_cb)
+    else:
+        bot.send_message(chat_id, text = 'Слово четырёхзначное состоит из двух корней, один из которых четыре. ЧЕТЫРЕ. Давайте я никому не скажу, а вы попробуете ещё раз?')
+        bot.register_next_step_handler_by_chat_id(chat_id, play_cb)
 
 
 #инструкции и информация
