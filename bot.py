@@ -141,7 +141,7 @@ def s_i(c):
     if c.data == '/инструкция':
         send_instr(c.message.chat.id)
     if c.data == '/information':
-        bot.send_message(c.message.chat.id, text = 'version alpha 1.0\n Разработчик:\n Рябчицкий Матвей Максимович')
+        bot.send_message(c.message.chat.id, text = 'version alpha 1.1\n Исправлен баг с игрой Быки и Коровы\n Разработчик:\n Рябчицкий Матвей Максимович')
 
 
 @bot.message_handler(commands = ['инструкция', 'инструкция КН', 'инструкция БК'])
